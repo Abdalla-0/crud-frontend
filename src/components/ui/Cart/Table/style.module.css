@@ -1,0 +1,13 @@
+.tableSection {
+    min-height: 300px;
+    background-color: white;
+
+    th {
+        background-color: var(--color-secondary);
+    }
+
+    .cartInput {
+        border: 1px solid #d5d5d5 !important;
+
+    }
+}

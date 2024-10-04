@@ -1,0 +1,45 @@
+.header {
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+.header h1 {
+    margin: 20px 0;
+}
+
+.header .nav {
+    background-color: black;
+    height: 50px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.header .nav li:first-child {
+    margin-left: 5px;
+}
+
+.header .nav li {
+    margin-right: 10px;
+}
+
+.header .nav li a {
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    padding-inline: 12px;
+    border-radius: 4px;
+    padding-block: 4px;
+}
+
+.header .nav .active {
+    background-color: rgb(255, 183, 0);
+    color: #333;
+    font-weight: 500;
+}
+
+.login {
+    color: white;
+    font-size: 16px;
+    margin-left: auto;
+}
