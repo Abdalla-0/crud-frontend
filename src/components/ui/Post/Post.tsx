@@ -1,15 +1,27 @@
-import Table from "react-bootstrap/Table";
-import { Button, ButtonGroup } from "react-bootstrap";
+import { memo, useState } from "react";
 import { TPosts } from "../../../types/posts.type";
-import { TLoading } from "../../../types";
+import Table from "react-bootstrap/Table";
+import { Button, ButtonGroup, Modal } from "react-bootstrap";
 
-type TPostsProps = {
+const Post = ({
+  data,
+  deleteDataHandler,
+}: {
   data: TPosts[];
-  loading: TLoading;
-  error: string | null;
-};
-
-const Post = ({ data, loading, error }: TPostsProps) => {
+  deleteDataHandler: (id: string) => void;
+}) => {
+  const [itemClone, setItemClone] = useState<TPosts | null>(null);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const modal = (item: TPosts) => {
+    setShow(true);
+    setItemClone(item);
+  };
+  const confirmDelete = () => {
+    if (itemClone?.id) {
+      deleteDataHandler(itemClone.id);
+    }
+  };
   return (
     <Table striped bordered hover>
       <thead>
@@ -21,16 +33,7 @@ const Post = ({ data, loading, error }: TPostsProps) => {
         </tr>
       </thead>
       <tbody>
-        {loading === "pending" ? (
-          <tr>
-            <td colSpan={3}>Loading please wait...</td>
-          </tr>
-        ) : error ? (
-          <tr>
-            <td colSpan={3}>{error}</td>
-          </tr>
-        ) : (
-          data &&
+        {data &&
           data.map((item, index) => (
             <tr key={item.id}>
               <td>{++index}</td>
@@ -39,15 +42,38 @@ const Post = ({ data, loading, error }: TPostsProps) => {
               <td>
                 <ButtonGroup aria-label="Basic example">
                   <Button variant="success">Edit</Button>
-                  <Button variant="danger">Delete</Button>
+                  <Button variant="danger" onClick={() => modal(item)}>
+                    Delete
+                  </Button>
                 </ButtonGroup>
               </td>
             </tr>
-          ))
-        )}
+          ))}
+        {
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Delete</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              <p>
+                Are you sure you want to delete this post : ({itemClone?.title})
+              </p>
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={confirmDelete}>
+                Yes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        }
       </tbody>
     </Table>
   );
 };
 
-export default Post;
+export default memo(Post);

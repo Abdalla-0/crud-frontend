@@ -1,8 +1,7 @@
 
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import products from './Products/productsSlice';
-import categories from "./categories/categoriesSlice"
 import posts from "./posts/postsSlice"
+import auth from "./auth/authSlice"
 import {
     persistStore,
     persistReducer,
@@ -17,15 +16,13 @@ import storage from 'redux-persist/lib/storage';
 const rootPresistConfig = {
     key: "root",
     storage,
-    blacklist: ["products", "posts", "categories"]
+    blacklist: ["auth", "posts"]
 }
 
 
 const rootReducer = combineReducers({
     posts,
-    products,
-    categories,
-
+    auth,
 })
 
 const presistedReducer = persistReducer(rootPresistConfig, rootReducer)

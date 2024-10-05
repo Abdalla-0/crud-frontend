@@ -1,10 +1,19 @@
-import { actionGetPosts } from "../../store/posts/postsSlice";
+import {
+  actionDeletePosts,
+  actionGetPosts,
+} from "../../store/posts/postsSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import Post from "../../components/ui/Post/Post";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import Loading from "../../components/Feedback/Loading";
 const Home = () => {
   const dispatch = useAppDispatch();
   const { data, loading, error } = useAppSelector((state) => state.posts);
+
+  const deleteDataHandler = useCallback(
+    async (id: string) => await dispatch(actionDeletePosts(id)),
+    [dispatch]
+  );
 
   useEffect(() => {
     dispatch(actionGetPosts());
@@ -12,7 +21,9 @@ const Home = () => {
 
   return (
     <>
-      <Post data={data} loading={loading} error={error} />
+      <Loading loading={loading} error={error}>
+        <Post data={data} deleteDataHandler={deleteDataHandler} />
+      </Loading>
     </>
   );
 };
