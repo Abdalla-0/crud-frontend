@@ -3,11 +3,13 @@ import { isString, TLoading, TPosts } from "../../types";
 import actionGetPosts from './actions/actionGetPosts';
 import actionDeletePosts from './actions/actionDeletePosts';
 import actionAddPosts from './actions/actionAddPosts';
+import actionGetPost from './actions/actionGetPost';
 
 
 
 interface IPostsState {
     data: TPosts[],
+    post: TPosts | null,
     loading: TLoading,
     error: string | null,
 
@@ -15,6 +17,7 @@ interface IPostsState {
 
 const initialState: IPostsState = {
     data: [],
+    post: null,
     loading: 'idle',
     error: null,
 };
@@ -37,6 +40,24 @@ export const postsSlice = createSlice({
 
         })
         builder.addCase(actionGetPosts.rejected, (state, action) => {
+            state.loading = 'failed'
+            if (isString(action.payload)) {
+                state.error = action.payload
+            }
+        })
+        // get post 
+        builder.addCase(actionGetPost.pending, (state) => {
+            state.loading = 'pending'
+            state.error = null
+        })
+        builder.addCase(actionGetPost.fulfilled, (state, action) => {
+            state.loading = 'succeeded'
+            if (action.payload) {
+                state.post = action.payload
+            }
+
+        })
+        builder.addCase(actionGetPost.rejected, (state, action) => {
             state.loading = 'failed'
             if (isString(action.payload)) {
                 state.error = action.payload
@@ -81,5 +102,5 @@ export const postsSlice = createSlice({
         })
     }
 })
-export { actionGetPosts, actionDeletePosts, actionAddPosts }
+export { actionGetPosts, actionDeletePosts, actionAddPosts, actionGetPost }
 export default postsSlice.reducer;

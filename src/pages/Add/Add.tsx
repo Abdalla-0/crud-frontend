@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useAppDispatch } from "../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { actionAddPosts } from "../../store/posts/postsSlice";
+import { useNavigate } from "react-router-dom";
 
 const AddPost = () => {
+  const { loading, error } = useAppSelector((state) => state.posts);
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
   const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title || !description) {
@@ -15,7 +18,10 @@ const AddPost = () => {
     }
     const id = String(Math.floor(Math.random() * 500));
     const userId = "";
-    dispatch(actionAddPosts({ id, title, description, userId }));
+    dispatch(actionAddPosts({ id, title, description, userId }))
+      .unwrap()
+      .then(() => navigate("/"));
+
     setTitle("");
     setDescription("");
   };
@@ -38,7 +44,17 @@ const AddPost = () => {
           onChange={(e) => setDescription(e.target.value)}
         />
       </Form.Group>
-      <Button type="submit">Submit</Button>
+      {loading === "pending" ? (
+        <Button type="submit" disabled={true}>
+          Loading...
+        </Button>
+      ) : loading === "failed" ? (
+        <>
+          <Button type="submit">Submit</Button> <p className="mt-3">{error}</p>
+        </>
+      ) : (
+        <Button type="submit">Submit</Button>
+      )}
     </Form>
   );
 };

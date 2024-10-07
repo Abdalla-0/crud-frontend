@@ -9,7 +9,6 @@ type TRespone = TPosts
 const actionAddPosts = createAsyncThunk("posts/actionAddPosts", async (postItem: { id: string, title: string, description: string, userId: string }, thunkAPI) => {
     const { rejectWithValue, getState } = thunkAPI
     const { auth } = getState()
-    console.log(auth);
 
     postItem.userId = auth.id
     try {
