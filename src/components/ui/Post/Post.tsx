@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 import { TPosts } from "../../../types/posts.type";
 import Table from "react-bootstrap/Table";
 import { Button, ButtonGroup, Modal } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Post = ({
   data,
@@ -11,6 +11,7 @@ const Post = ({
   data: TPosts[];
   deleteDataHandler: (id: string) => void;
 }) => {
+  const navigate = useNavigate();
   const [itemClone, setItemClone] = useState<TPosts | null>(null);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -44,7 +45,12 @@ const Post = ({
               <td>{item.description}</td>
               <td>
                 <ButtonGroup aria-label="Basic example">
-                  <Button variant="success">Edit</Button>
+                  <Button
+                    variant="success"
+                    onClick={() => navigate(`post/${item.id}/edit`)}
+                  >
+                    Edit
+                  </Button>
                   <Button variant="danger" onClick={() => modal(item)}>
                     Delete
                   </Button>
@@ -52,29 +58,29 @@ const Post = ({
               </td>
             </tr>
           ))}
-        {
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Confirm Delete</Modal.Title>
-            </Modal.Header>
-
-            <Modal.Body>
-              <p>
-                Are you sure you want to delete this post : ({itemClone?.title})
-              </p>
-            </Modal.Body>
-
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={confirmDelete}>
-                Yes
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        }
       </tbody>
+      {
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirm Delete</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <p>
+              Are you sure you want to delete this post : ({itemClone?.title})
+            </p>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={confirmDelete}>
+              Yes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      }
     </Table>
   );
 };

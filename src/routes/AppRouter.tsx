@@ -7,6 +7,17 @@ import Details from "../pages/Details/Details";
 import ErrorPage from "../pages/Error/ErrorPage";
 import Login from "../pages/Login/Login";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const paramHandler = ({ params }: { params: any }) => {
+  if (isNaN(params.id)) {
+    throw new Response("Bad Request", {
+      statusText: "Please make sure to insert correct ID",
+      status: 400,
+    });
+  }
+  return params.id;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,20 +26,18 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "post/add", element: <AddPost /> },
-      { path: "post/:id/edit", element: <Edit /> },
       {
         path: "post/:id",
         element: <Details />,
-        loader: ({ params }: { params: number }) => {
-          if (isNaN(params.id)) {
-            throw new Response("Bad Request", {
-              statusText: "Please make sure to insert correct ID",
-              status: 400,
-            });
-          }
-          return params.id;
-        },
+
+        loader: paramHandler,
       },
+      {
+        path: "post/:id/edit",
+        element: <Edit />,
+        loader: paramHandler,
+      },
+
       { path: "/login", element: <Login /> },
     ],
   },

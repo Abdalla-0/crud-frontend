@@ -4,6 +4,7 @@ import actionGetPosts from './actions/actionGetPosts';
 import actionDeletePosts from './actions/actionDeletePosts';
 import actionAddPosts from './actions/actionAddPosts';
 import actionGetPost from './actions/actionGetPost';
+import actionEditPosts from './actions/actionEditPosts';
 
 
 
@@ -49,6 +50,7 @@ export const postsSlice = createSlice({
         builder.addCase(actionGetPost.pending, (state) => {
             state.loading = 'pending'
             state.error = null
+            state.post = null
         })
         builder.addCase(actionGetPost.fulfilled, (state, action) => {
             state.loading = 'succeeded'
@@ -100,7 +102,25 @@ export const postsSlice = createSlice({
                 state.error = action.payload
             }
         })
+        // edit data
+        builder.addCase(actionEditPosts.pending, (state) => {
+            state.loading = 'pending'
+            state.error = null
+        })
+        builder.addCase(actionEditPosts.fulfilled, (state, action) => {
+            state.loading = 'succeeded'
+            if (action.payload) {
+                state.post = action.payload
+            }
+
+        })
+        builder.addCase(actionEditPosts.rejected, (state, action) => {
+            state.loading = 'failed'
+            if (isString(action.payload)) {
+                state.error = action.payload
+            }
+        })
     }
 })
-export { actionGetPosts, actionDeletePosts, actionAddPosts, actionGetPost }
+export { actionGetPosts, actionDeletePosts, actionAddPosts, actionGetPost, actionEditPosts }
 export default postsSlice.reducer;
