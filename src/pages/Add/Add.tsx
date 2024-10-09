@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { actionAddPosts } from "../../store/posts/postsSlice";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Feedback/Loading";
 
 const AddPost = () => {
   const { loading, error } = useAppSelector((state) => state.posts);
@@ -44,7 +45,10 @@ const AddPost = () => {
           onChange={(e) => setDescription(e.target.value)}
         />
       </Form.Group>
-      {loading === "pending" ? (
+      <Loading loading={loading} error={error}>
+        <Button type="submit">Submit</Button>
+      </Loading>
+      {/* {loading === "pending" ? (
         <Button type="submit" disabled={true}>
           Loading...
         </Button>
@@ -54,7 +58,7 @@ const AddPost = () => {
         </>
       ) : (
         <Button type="submit">Submit</Button>
-      )}
+      )} */}
     </Form>
   );
 };

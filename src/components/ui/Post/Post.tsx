@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import { TPosts } from "../../../types/posts.type";
 import Table from "react-bootstrap/Table";
 import { Button, ButtonGroup, Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Post = ({
   data,
@@ -37,7 +38,9 @@ const Post = ({
           data.map((item, index) => (
             <tr key={item.id}>
               <td>{++index}</td>
-              <td>{item.title}</td>
+              <td>
+                <Link to={`post/${item.id}`}>{item.title}</Link>
+              </td>
               <td>{item.description}</td>
               <td>
                 <ButtonGroup aria-label="Basic example">
