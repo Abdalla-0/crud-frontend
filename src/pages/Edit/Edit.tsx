@@ -22,7 +22,9 @@ const Edit = () => {
 
   const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(actionEditPosts({ id: post?.id as string, title, description }));
+    dispatch(actionEditPosts({ id: post?.id as string, title, description }))
+      .unwrap()
+      .then(() => navigate("/"));
   };
   return (
     <Form onSubmit={formSubmitHandler}>
@@ -44,9 +46,7 @@ const Edit = () => {
         />
       </Form.Group>
       <Loading loading={loading} error={error}>
-        <Button type="submit" onClick={() => navigate("/")}>
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
       </Loading>
     </Form>
   );
