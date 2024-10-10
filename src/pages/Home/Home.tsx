@@ -9,6 +9,7 @@ import Loading from "../../components/Feedback/Loading";
 const Home = () => {
   const dispatch = useAppDispatch();
   const { data, loading, error } = useAppSelector((state) => state.posts);
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
 
   const deleteDataHandler = useCallback(
     async (id: string) => await dispatch(actionDeletePosts(id)),
@@ -22,7 +23,11 @@ const Home = () => {
   return (
     <>
       <Loading loading={loading} error={error}>
-        <Post data={data} deleteDataHandler={deleteDataHandler} />
+        <Post
+          data={data}
+          deleteDataHandler={deleteDataHandler}
+          isLoggedIn={isLoggedIn}
+        />
       </Loading>
     </>
   );

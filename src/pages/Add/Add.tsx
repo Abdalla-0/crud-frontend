@@ -1,49 +1,68 @@
-import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { actionAddPosts } from "../../store/posts/postsSlice";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Feedback/Loading";
+import { useFormik } from "formik";
+import { postSchema } from "../../utils/postSchema";
 
 const AddPost = () => {
   const { loading, error } = useAppSelector((state) => state.posts);
   const dispatch = useAppDispatch();
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const navigate = useNavigate();
-  const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!title || !description) {
-      alert("Please fill out all fields.");
-      return;
-    }
-    const id = String(Math.floor(Math.random() * 500));
-    const userId = "";
-    dispatch(actionAddPosts({ id, title, description, userId }))
-      .unwrap()
-      .then(() => navigate("/"));
 
-    setTitle("");
-    setDescription("");
-  };
+  const navigate = useNavigate();
+
+  const formik = useFormik({
+    initialValues: { title: "", description: "" },
+    validationSchema: postSchema,
+    onSubmit: (values) => {
+      if (!values.title || !values.description) {
+        alert("Please fill out all fields.");
+        return;
+      }
+      const id = String(Math.floor(Math.random() * 500));
+      const userId = "";
+      dispatch(
+        actionAddPosts({
+          id,
+          title: values.title,
+          description: values.description,
+          userId,
+        })
+      )
+        .unwrap()
+        .then(() => navigate("/"));
+    },
+  });
+
   return (
-    <Form onSubmit={formSubmitHandler}>
+    <Form onSubmit={formik.handleSubmit}>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
         <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          name="title"
+          onChange={formik.handleChange}
+          value={formik.values.title}
+          isInvalid={!!formik.errors.title}
         />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.title}
+        </Form.Control.Feedback>
       </Form.Group>
       <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
         <Form.Label>Description</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          name="description"
+          onChange={formik.handleChange}
+          value={formik.values.description}
+          isInvalid={!!formik.errors.description}
         />
+        <Form.Control.Feedback type="invalid">
+          {formik.errors.description}
+        </Form.Control.Feedback>
       </Form.Group>
       <Loading loading={loading} error={error}>
         <Button type="submit">Submit</Button>

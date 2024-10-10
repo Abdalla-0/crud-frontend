@@ -1,11 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import WithGuard from "../components/Feedback/WithGuard";
 import App from "../App";
 import Home from "../pages/Home/Home";
-import AddPost from "../pages/Add/Add";
-import Edit from "../pages/Edit/Edit";
-import Details from "../pages/Details/Details";
 import ErrorPage from "../pages/Error/ErrorPage";
 import Login from "../pages/Login/Login";
+import React, { Suspense } from "react";
+
+const AddPost = React.lazy(() => import("../pages/Add/Add"));
+const Edit = React.lazy(() => import("../pages/Edit/Edit"));
+const Details = React.lazy(() => import("../pages/Details/Details"));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramHandler = ({ params }: { params: any }) => {
@@ -25,16 +28,36 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
-      { path: "post/add", element: <AddPost /> },
+      {
+        path: "post/add",
+        element: (
+          <Suspense fallback={<span>Loading please wait from susbense</span>}>
+            <WithGuard>
+              <AddPost />
+            </WithGuard>
+          </Suspense>
+        ),
+      },
       {
         path: "post/:id",
-        element: <Details />,
+
+        element: (
+          <Suspense fallback={<span>Loading please wait from susbense</span>}>
+            <Details />
+          </Suspense>
+        ),
 
         loader: paramHandler,
       },
       {
         path: "post/:id/edit",
-        element: <Edit />,
+        element: (
+          <Suspense fallback={<span>Loading please wait from susbense</span>}>
+            <WithGuard>
+              <Edit />
+            </WithGuard>
+          </Suspense>
+        ),
         loader: paramHandler,
       },
 

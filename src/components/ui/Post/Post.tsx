@@ -7,9 +7,11 @@ import { Link, useNavigate } from "react-router-dom";
 const Post = ({
   data,
   deleteDataHandler,
+  isLoggedIn,
 }: {
   data: TPosts[];
   deleteDataHandler: (id: string) => void;
+  isLoggedIn: boolean;
 }) => {
   const navigate = useNavigate();
   const [itemClone, setItemClone] = useState<TPosts | null>(null);
@@ -51,7 +53,11 @@ const Post = ({
                   >
                     Edit
                   </Button>
-                  <Button variant="danger" onClick={() => modal(item)}>
+                  <Button
+                    variant="danger"
+                    disabled={!isLoggedIn}
+                    onClick={() => modal(item)}
+                  >
                     Delete
                   </Button>
                 </ButtonGroup>

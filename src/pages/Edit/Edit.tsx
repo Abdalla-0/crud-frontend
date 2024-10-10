@@ -3,8 +3,10 @@ import { Button, Form } from "react-bootstrap";
 import usePostDetails from "../../hooks/use-post-details";
 import Loading from "../../components/Feedback/Loading";
 import { useAppDispatch } from "../../store/hook";
-import { actionEditPosts } from "../../store/posts/postsSlice";
+import { actionEditPosts, clearPost } from "../../store/posts/postsSlice";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { postSchema } from "../../utils/postSchema";
 
 const Edit = () => {
   const dispatch = useAppDispatch();
@@ -14,20 +16,38 @@ const Edit = () => {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    if (post && !title && !description) {
+    if (post) {
       setTitle(post?.title);
       setDescription(post?.description);
     }
   }, [post, title, description]);
 
-  const formSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(actionEditPosts({ id: post?.id as string, title, description }))
-      .unwrap()
-      .then(() => navigate("/"));
-  };
+  useEffect(() => {
+    dispatch(clearPost());
+  }, [dispatch]);
+
+  const formik = useFormik({
+    initialValues: { title: "", description: "" },
+    validationSchema: postSchema,
+    onSubmit: (values) => {
+      if (!values.title || !values.description) {
+        alert("Please fill out all fields.");
+        return;
+      }
+      dispatch(
+        actionEditPosts({
+          id: post?.id as string,
+          title: values.title,
+          description: values.description,
+        })
+      )
+        .unwrap()
+        .then(() => navigate("/"));
+    },
+  });
+
   return (
-    <Form onSubmit={formSubmitHandler}>
+    <Form onSubmit={formik.handleSubmit}>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
         <Form.Label>Title</Form.Label>
         <Form.Control
