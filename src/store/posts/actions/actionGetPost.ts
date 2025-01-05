@@ -5,7 +5,7 @@ import { TPosts } from "../../../types";
 
 type TRespone = TPosts
 
-const actionGetPost = createAsyncThunk("posts/actionGetPost", async (id, thunkAPI) => {
+const actionGetPost = createAsyncThunk("posts/actionGetPost", async (id: string, thunkAPI) => {
     const { rejectWithValue } = thunkAPI
     try {
         const response = await axios.get<TRespone>(`http://localhost:5005/posts/${id}`)

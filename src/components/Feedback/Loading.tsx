@@ -1,10 +1,12 @@
 import React from "react";
 import { TLoading } from "../../types";
+import { ButtonProps } from "react-bootstrap";
 
 type TLoadingProps = {
   loading: TLoading;
   error: string | null;
-  children: React.ReactNode;
+  children: React.ReactElement<ButtonProps>;
+
 };
 
 const Loading = ({ children, loading, error }: TLoadingProps) => {

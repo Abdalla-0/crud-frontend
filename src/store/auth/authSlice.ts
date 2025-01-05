@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface IAuthState { id: string, isLoggedIn: boolean }
+interface IAuthState {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    user?: any; id: string, isLoggedIn: boolean 
+}
 
 const initialState: IAuthState = { id: "1", isLoggedIn: true };
 
