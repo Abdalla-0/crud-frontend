@@ -8,7 +8,7 @@ type TRespone = TPosts
 const actionGetPost = createAsyncThunk("posts/actionGetPost", async (id: string, thunkAPI) => {
     const { rejectWithValue } = thunkAPI
     try {
-        const response = await axios.get<TRespone>(`http://localhost:5005/posts/${id}`)
+        const response = await axios.get<TRespone>(`/api/posts.json/${id}`)
         return response.data
     } catch (error) {
         return rejectWithValue(axiosError(error))

@@ -25,7 +25,7 @@ const actionAddPosts = createAsyncThunk(
         postItem.userId = userId;
 
         try {
-            const response = await axios.post<TRespone>(`http://localhost:5005/posts`, postItem);
+            const response = await axios.post<TRespone>(`/api/posts.json`, postItem);
             return response.data;
         } catch (error) {
             return rejectWithValue(axiosError(error));

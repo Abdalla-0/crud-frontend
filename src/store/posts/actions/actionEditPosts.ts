@@ -10,7 +10,7 @@ type TItem = { id: string, title: string, description: string }
 const actionEditPosts = createAsyncThunk("posts/actionEditPosts", async (item: TItem, thunkAPI) => {
     const { rejectWithValue } = thunkAPI
     try {
-        const response = await axios.patch<TRespone>(`http://localhost:5005/posts/${item.id}`, item)
+        const response = await axios.patch<TRespone>(`/api/posts.json/${item.id}`, item)
         return response.data
 
     } catch (error) {
