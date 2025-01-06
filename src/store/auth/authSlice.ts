@@ -5,19 +5,23 @@ interface IAuthState {
     user?: any; id: string, isLoggedIn: boolean
 }
 
-const initialState: IAuthState = { id: "1", isLoggedIn: false };
+const initialState: IAuthState = { id: "1", isLoggedIn: JSON.parse(localStorage.getItem("isLoggedIn") || "false"), };
 
 export const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
         actionLogin: (state) => {
-            state.isLoggedIn = true;
+            const isLoggedIn = true;
+            localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
+            state.isLoggedIn = isLoggedIn;
         },
         actionLogout: (state) => {
-            state.isLoggedIn = false;
+            const isLoggedIn = false;
+            localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
+            state.isLoggedIn = isLoggedIn;
         },
-    }
+    },
 })
 
 export const { actionLogin, actionLogout } = authSlice.actions

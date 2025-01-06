@@ -32,7 +32,7 @@ export const postsSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        // get data 
+        // get data (all posts)
         builder.addCase(actionGetPosts.pending, (state) => {
             state.loading = 'pending'
             state.error = null
@@ -40,9 +40,12 @@ export const postsSlice = createSlice({
         builder.addCase(actionGetPosts.fulfilled, (state, action) => {
             state.loading = 'succeeded'
             if (action.payload) {
-                state.data = action.payload
+                state.data = action.payload.map((doc) => ({
+                    id: doc.id,
+                    title: doc.title,
+                    description: doc.description,
+                }));
             }
-
         })
         builder.addCase(actionGetPosts.rejected, (state, action) => {
             state.loading = 'failed'
@@ -50,7 +53,7 @@ export const postsSlice = createSlice({
                 state.error = action.payload
             }
         })
-        // get post 
+        // get single post 
         builder.addCase(actionGetPost.pending, (state) => {
             state.loading = 'pending'
             state.error = null
@@ -93,12 +96,16 @@ export const postsSlice = createSlice({
             state.error = null
         })
         builder.addCase(actionAddPosts.fulfilled, (state, action) => {
-            state.loading = 'succeeded'
-            if (action.payload) {
-                state.data = [...state.data, action.payload];
-            }
+            state.loading = 'succeeded';
 
-        })
+            if (action.payload) {
+                state.data = [...state.data, {
+                    id: action.payload.id,
+                    title: action.payload.title,
+                    description: action.payload.description,
+                }];
+            }
+        });
         builder.addCase(actionAddPosts.rejected, (state, action) => {
             state.loading = 'failed'
             if (isString(action.payload)) {
@@ -110,11 +117,13 @@ export const postsSlice = createSlice({
             state.loading = 'pending'
             state.error = null
         })
-        builder.addCase(actionEditPosts.fulfilled, (state, action) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        builder.addCase(actionEditPosts.fulfilled, (state, action: { payload: any }) => {
             state.loading = 'succeeded'
             if (action.payload) {
                 state.post = action.payload
             }
+            console.log(state.post);
 
         })
         builder.addCase(actionEditPosts.rejected, (state, action) => {

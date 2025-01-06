@@ -1,24 +1,32 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { TPosts } from "../../../types";
 import { axiosError } from "../../../utils/axiosError";
+import { collection, addDoc, getDoc } from "firebase/firestore";
+import { db } from "../../../fireBase";
 
-type TRespone = TPosts
 
 
 const actionAddPosts = createAsyncThunk("posts/actionAddPosts", async (postItem: TPosts, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
-
     try {
-        const response = await axios.post<TRespone>("https://crud-frontend-bg55sbscc-abdallas-projects-eef2bc41.vercel.app/api/posts.json", postItem);
-        console.log(response.data);
+        const docRef = await addDoc(collection(db, "posts"), {
+            id: postItem.id,
+            title: postItem.title,
+            description: postItem.description,
+        }
+        );
+        
+        const addedDoc = await getDoc(docRef);
+        const data = addedDoc.data();
+        console.log(data);
 
-        return response.data;
+        return data;
     } catch (error) {
+        console.log("error", error);
+        
         return rejectWithValue(axiosError(error));
     }
-}
-);
+});
 
 
 export default actionAddPosts

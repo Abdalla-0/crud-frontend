@@ -19,8 +19,8 @@ const Edit = () => {
 
   const formik = useFormik({
     initialValues: {
-      title: post ? post?.title : "",
-      description: post ? post?.description : "",
+      title: post?.title || "",
+      description: post?.description || "",
     },
     validationSchema: postSchema,
     enableReinitialize: true,
