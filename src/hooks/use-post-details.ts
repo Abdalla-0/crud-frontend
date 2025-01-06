@@ -7,7 +7,7 @@ const usePostDetails = () => {
     const { post, loading, error } = useAppSelector((state) => state.posts);
     const dispatch = useAppDispatch();
     const params = useParams();
-    const id = params.id as string; // افتراض أن id هو string
+    const id = params.id as string;
 
     useEffect(() => {
         if (id) {

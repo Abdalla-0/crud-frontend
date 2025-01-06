@@ -21,13 +21,12 @@ const AddPost = () => {
         return;
       }
       const id = String(Math.floor(Math.random() * 500));
-      const userId = "";
+
       dispatch(
         actionAddPosts({
           id,
           title: values.title,
           description: values.description,
-          userId,
         })
       )
         .unwrap()
@@ -67,17 +66,6 @@ const AddPost = () => {
       <Loading loading={loading} error={error}>
         <Button type="submit">Submit</Button>
       </Loading>
-      {/* {loading === "pending" ? (
-        <Button type="submit" disabled={true}>
-          Loading...
-        </Button>
-      ) : loading === "failed" ? (
-        <>
-          <Button type="submit">Submit</Button> <p className="mt-3">{error}</p>
-        </>
-      ) : (
-        <Button type="submit">Submit</Button>
-      )} */}
     </Form>
   );
 };

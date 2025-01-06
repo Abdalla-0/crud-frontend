@@ -1,36 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosError } from "../../../utils/axiosError";
 import axios from "axios";
 import { TPosts } from "../../../types";
-
+import { axiosError } from "../../../utils/axiosError";
 
 type TRespone = TPosts
 
-import { RootState } from "../../store";
 
-const actionAddPosts = createAsyncThunk(
-    "posts/actionAddPosts",
-    async (
-        postItem: { id: string; title: string; description: string; userId?: string },
-        thunkAPI
-    ) => {
-        const { rejectWithValue, getState } = thunkAPI;
-        const state = getState() as RootState;
-        const userId = state.auth?.user?.id; // احصل على `userId` من حالة auth.
+const actionAddPosts = createAsyncThunk("posts/actionAddPosts", async (postItem: TPosts, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
 
-        if (!userId) {
-            return rejectWithValue("User not authenticated");
-        }
+    try {
+        const response = await axios.post<TRespone>("https://crud-frontend-bg55sbscc-abdallas-projects-eef2bc41.vercel.app/api/posts.json", postItem);
+        console.log(response.data);
 
-        postItem.userId = userId;
-
-        try {
-            const response = await axios.post<TRespone>(`/api/posts.json`, postItem);
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(axiosError(error));
-        }
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(axiosError(error));
     }
+}
 );
 
 
