@@ -12,7 +12,7 @@ const Details = React.lazy(() => import("../pages/Details/Details"));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const paramHandler = ({ params }: { params: any }) => {
-  if (isNaN(params.id)) {
+  if (!params.id) {
     throw new Response("Bad Request", {
       statusText: "Please make sure to insert correct ID",
       status: 400,
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       {
         path: "post/add",
         element: (
-          <Suspense fallback={<span>Loading please wait from susbense</span>}>
+          <Suspense fallback={<span>Loading please wait...</span>}>
             <WithGuard>
               <AddPost />
             </WithGuard>

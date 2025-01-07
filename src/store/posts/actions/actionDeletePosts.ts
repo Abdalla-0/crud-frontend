@@ -8,7 +8,6 @@ const actionDeletePost = createAsyncThunk(
     async (id: string, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
         try {
-            // استعلام عن البوست باستخدام الـ id
             const postsRef = collection(db, "posts");
             const q = query(postsRef, where("id", "==", id));
             const querySnapshot = await getDocs(q);

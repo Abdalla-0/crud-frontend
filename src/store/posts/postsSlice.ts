@@ -57,7 +57,12 @@ export const postsSlice = createSlice({
         builder.addCase(actionGetPost.fulfilled, (state, action) => {
             state.loading = 'succeeded'
             if (action.payload) {
-                state.post = action.payload
+                state.post = {
+                    id: action.payload.id,
+                    title: (action.payload as { id: string; title: string; }).title || '',
+                    description: (action.payload as { id: string; title: string; description: string; }).description || '',
+                    createdAt: (action.payload as { id: string; title: string; description: string; createdAt: string; }).createdAt,
+                };
             }
 
         })
