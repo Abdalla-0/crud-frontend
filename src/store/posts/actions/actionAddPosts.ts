@@ -15,15 +15,14 @@ const actionAddPosts = createAsyncThunk("posts/actionAddPosts", async (postItem:
             description: postItem.description,
         }
         );
-        
+
         const addedDoc = await getDoc(docRef);
         const data = addedDoc.data();
-        console.log(data);
 
         return data;
     } catch (error) {
         console.log("error", error);
-        
+
         return rejectWithValue(axiosError(error));
     }
 });

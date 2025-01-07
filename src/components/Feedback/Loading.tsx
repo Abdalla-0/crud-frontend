@@ -1,12 +1,10 @@
 import React from "react";
 import { TLoading } from "../../types";
-import { ButtonProps } from "react-bootstrap";
 
 type TLoadingProps = {
   loading: TLoading;
   error: string | null;
-  children: React.ReactElement<ButtonProps>;
-
+  children: React.ReactNode;
 };
 
 const Loading = ({ children, loading, error }: TLoadingProps) => {
@@ -21,7 +19,7 @@ const Loading = ({ children, loading, error }: TLoadingProps) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (isReactElement && (elementType as any).displayName === "Button") {
       const cloneBtn = React.cloneElement(
-        children,
+        children as React.ReactElement<HTMLButtonElement>,
         { disabled: true },
         "Loading..."
       );

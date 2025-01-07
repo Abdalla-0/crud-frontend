@@ -1,21 +1,24 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../fireBase";
 import { axiosError } from "../../../utils/axiosError";
-import { TPosts } from "../../../types";
-
-type TResponse = TPosts;
 
 const actionGetPost = createAsyncThunk(
     "posts/actionGetPost",
     async (id: string, thunkAPI) => {
+
         const { rejectWithValue } = thunkAPI;
         try {
-            const docRef = doc(db, "posts", id);
-            const docSnap = await getDoc(docRef);
+            const postsRef = collection(db, "posts");
+            const q = query(postsRef, where("id", "==", id));
+            const querySnapshot = await getDocs(q);
 
-            if (docSnap.exists()) {
-                return { id: docSnap.id, ...docSnap.data() } as TResponse;
+            if (!querySnapshot.empty) {
+                let postData = null;
+                querySnapshot.forEach((doc) => {
+                    postData = { id: doc.id, ...doc.data() };
+                });
+                return postData;
             } else {
                 throw new Error("Document not found");
             }

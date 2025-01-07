@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         path: "post/:id",
 
         element: (
-          <Suspense fallback={<span>Loading please wait from susbense</span>}>
+          <Suspense fallback={<span>Loading please wait...</span>}>
             <Details />
           </Suspense>
         ),

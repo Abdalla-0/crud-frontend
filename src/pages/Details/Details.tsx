@@ -15,10 +15,14 @@ const Details = () => {
   return (
     <div>
       <Loading loading={loading} error={error}>
-        <>
-          <p>Title : {post?.title}</p>
-          <p>Description : {post?.description}</p>
-        </>
+        {post ? (
+          <>
+            <p>Title : {post.title}</p>
+            <p>Description : {post.description}</p>
+          </>
+        ) : (
+          <p>No post details available.</p>
+        )}
       </Loading>
     </div>
   );

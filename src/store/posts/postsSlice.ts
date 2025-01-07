@@ -40,11 +40,7 @@ export const postsSlice = createSlice({
         builder.addCase(actionGetPosts.fulfilled, (state, action) => {
             state.loading = 'succeeded'
             if (action.payload) {
-                state.data = action.payload.map((doc) => ({
-                    id: doc.id,
-                    title: doc.title,
-                    description: doc.description,
-                }));
+                state.data = action.payload
             }
         })
         builder.addCase(actionGetPosts.rejected, (state, action) => {
@@ -123,7 +119,7 @@ export const postsSlice = createSlice({
             if (action.payload) {
                 state.post = action.payload
             }
-            console.log(state.post);
+
 
         })
         builder.addCase(actionEditPosts.rejected, (state, action) => {

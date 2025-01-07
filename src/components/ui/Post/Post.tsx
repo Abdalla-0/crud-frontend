@@ -39,7 +39,7 @@ const Post = ({
       <tbody>
         {data &&
           data.map((item, index) => (
-            <tr key={index}>
+            <tr key={item.id}>
               <td>{++index}</td>
               <td>
                 <Link to={`post/${item.id}`}>{item.title}</Link>

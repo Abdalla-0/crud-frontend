@@ -7,8 +7,7 @@ const usePostDetails = () => {
     const { post, loading, error } = useAppSelector((state) => state.posts);
     const dispatch = useAppDispatch();
     const params = useParams();
-    const id = params.id as string;
-
+    const id = params?.id;
     useEffect(() => {
         if (id) {
             dispatch(actionGetPost(id));

@@ -8,8 +8,13 @@ const actionGetPosts = createAsyncThunk("posts/actionGetPosts", async (_, thunkA
     const { rejectWithValue } = thunkAPI
     try {
         const querySnapshot = await getDocs(collection(db, "posts"));
-        const posts = querySnapshot.docs.map(doc => doc.data());
-
+        const posts = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            title: doc.data().title,
+            description: doc.data().description,
+            createdAt: doc.data().createdAt || Date.now(),
+        }));
+        posts.sort((a, b) => b.createdAt - a.createdAt);
         return posts;
     } catch (error) {
         return rejectWithValue(axiosError(error))

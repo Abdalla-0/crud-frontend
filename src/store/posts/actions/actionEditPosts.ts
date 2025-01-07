@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { doc, updateDoc, getDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../../fireBase";
 import { axiosError } from "../../../utils/axiosError";
 
@@ -10,16 +10,22 @@ const actionEditPosts = createAsyncThunk(
     async (item: TItem, thunkAPI) => {
         const { rejectWithValue } = thunkAPI;
         try {
-            const docRef = doc(db, "posts", item.id);
 
-            // تحديث البيانات في المستند
-            await updateDoc(docRef, {
+            const q = query(collection(db, "posts"), where("id", "==", item.id));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                throw new Error("Post not found");
+            }
+            const postDoc = querySnapshot.docs[0];
+            const postRef = doc(db, "posts", postDoc.id);
+            await updateDoc(postRef, {
                 title: item.title,
                 description: item.description,
             });
 
-            // جلب البيانات المحدّثة
-            const updatedDoc = await getDoc(docRef);
+
+            const updatedDoc = await getDoc(postRef);
 
 
             if (updatedDoc.exists()) {
