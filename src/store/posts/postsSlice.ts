@@ -98,14 +98,12 @@ export const postsSlice = createSlice({
         })
         builder.addCase(actionAddPosts.fulfilled, (state, action) => {
             state.loading = 'succeeded';
-
-            if (action.payload) {
-                state.data = [...state.data, {
-                    id: action.payload.id,
-                    title: action.payload.title,
-                    description: action.payload.description,
-                }];
-            }
+            const payload = action.payload as unknown as { id: string; title: string; description: string };
+            state.data = [...state.data, {
+                id: payload.id,
+                title: payload.title,
+                description: payload.description,
+            }];
         });
         builder.addCase(actionAddPosts.rejected, (state, action) => {
             state.loading = 'failed'
