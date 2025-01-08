@@ -1,8 +1,8 @@
 import { memo, useState } from "react";
-import { TPosts } from "../../../types/posts.type";
-import Table from "react-bootstrap/Table";
 import { Button, ButtonGroup, Modal } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import Table from "react-bootstrap/Table";
+import { useNavigate } from "react-router-dom";
+import { TPosts } from "../../../types/posts.type";
 
 const Post = ({
   data,
@@ -27,7 +27,7 @@ const Post = ({
     }
   };
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover responsive style={{ minWidth: "700px" }}>
       <thead>
         <tr className="text-center">
           <th>ID</th>
@@ -41,12 +41,16 @@ const Post = ({
           data.map((item, index) => (
             <tr key={item.id}>
               <td>{++index}</td>
-              <td>
-                <Link to={`post/${item.id}`}>{item.title}</Link>
-              </td>
+              <td>{item.title}</td>
               <td>{item.description}</td>
-              <td>
+              <td className="text-center">
                 <ButtonGroup aria-label="Basic example">
+                  <Button
+                    variant="warning"
+                    onClick={() => navigate(`post/${item.id}`)}
+                  >
+                    Read
+                  </Button>
                   <Button
                     variant="success"
                     onClick={() => navigate(`post/${item.id}/edit`)}

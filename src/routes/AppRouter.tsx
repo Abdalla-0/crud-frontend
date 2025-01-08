@@ -3,7 +3,6 @@ import WithGuard from "../components/Feedback/WithGuard";
 import App from "../App";
 import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/Error/ErrorPage";
-import Login from "../pages/Login/Login";
 import React, { Suspense } from "react";
 
 const AddPost = React.lazy(() => import("../pages/Add/Add"));
@@ -60,8 +59,6 @@ const router = createBrowserRouter([
         ),
         loader: paramHandler,
       },
-
-      { path: "/login", element: <Login /> },
     ],
   },
 ]);
