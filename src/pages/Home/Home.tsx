@@ -23,11 +23,15 @@ const Home = () => {
   return (
     <>
       <Loading loading={loading} error={error}>
-        <Post
-          data={data}
-          deleteDataHandler={deleteDataHandler}
-          isLoggedIn={isLoggedIn}
-        />
+        {data.length > 0 ? (
+          <Post
+            data={data}
+            deleteDataHandler={deleteDataHandler}
+            isLoggedIn={isLoggedIn}
+          />
+        ) : (
+          <h1 className="text-center fs-3">Plese add your firest post</h1>
+        )}
       </Loading>
     </>
   );
