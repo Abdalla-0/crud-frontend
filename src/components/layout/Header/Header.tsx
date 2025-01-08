@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <div className="header">
       <h1>CRUD APP</h1>
-      <ul className="nav">
+      <ul className="nav rounded-1">
         <li>
           <NavLink to="/">Home</NavLink>
         </li>
@@ -17,7 +17,7 @@ const Header = () => {
         </li>
         <li className="login">
           <Dropdown>
-            <Dropdown.Toggle variant="warning" id="dropdown-basic" size="sm">
+            <Dropdown.Toggle variant="light" id="dropdown-basic" size="sm">
               login
             </Dropdown.Toggle>
 

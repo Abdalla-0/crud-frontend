@@ -22,7 +22,11 @@ const Home = () => {
 
   return (
     <>
-      {data.length > 0 ? (
+      {!isLoggedIn ? (
+        <h1 className="text-center fs-3">
+          Plese login first to add your firest post
+        </h1>
+      ) : data.length > 0 ? (
         <Loading loading={loading} error={error}>
           <Post
             data={data}
@@ -31,7 +35,9 @@ const Home = () => {
           />
         </Loading>
       ) : (
-        <h1 className="text-center fs-3">Plese add your firest post</h1>
+        <h1 className="text-center fs-3">
+          Plese add your firest post
+        </h1>
       )}
     </>
   );
