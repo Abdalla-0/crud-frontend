@@ -24,7 +24,7 @@ const Home = () => {
     <>
       {!isLoggedIn ? (
         <h1 className="text-center fs-3">
-          Plese login first to add your firest post
+          Plese login first to add posts
         </h1>
       ) : data.length > 0 ? (
         <Loading loading={loading} error={error}>
